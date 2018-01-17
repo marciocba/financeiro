@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 import com.livro.capitulo4.model.Usuario;
 import com.livro.capitulo4.model.DAO.UsuarioDAO;
 
-public class UsuarioImpl implements UsuarioDAO {
+public class UsuarioDAOImpl implements UsuarioDAO {
 	private Session session;
 	
 	public void setSession(Session session) {
@@ -23,7 +23,12 @@ public class UsuarioImpl implements UsuarioDAO {
 
 	@Override
 	public void atualizar(Usuario usuario) {
-		session.update(usuario);
+		if (usuario.getPermissao() == null || usuario.getPermissao().size() == 0) {
+			Usuario usuarioPermissao = this.carregar(usuario.getCodigo());
+			usuario.setPermissao(usuarioPermissao.getPermissao());
+			this.session.evict(usuarioPermissao);
+		}
+		this.session.update(usuario);
 
 	}
 
