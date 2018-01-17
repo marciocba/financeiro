@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"> 
+
+<h:head>
+<title>Area Administratica</title>
+</h:head> 
+<body> 
+	<h1>Area Administratica</h1>
+	<h:form>
+		<h:messages/>
+		<h:dataTable value="#{usuarioController.lista}" var="usuario" rules="rows" cellpadding="5">
+		<f:facet name="caption">
+		A listagem a seguir exibe a relacao de todos os usuarios do sistema. 
+		voce podera realizar ativacao e desatvaccao, edicao e exclusao para os usuarios.
+		</f:facet>
+		<f:facet name="header">Listagem de Usuarios</f:facet>
+		<f:facet name="footer">Final da Listagem de Usuarios</f:facet>
+		<!-- begin of colluns -->
+		<h:column>
+		 <h:commandLink action="#{usuarioController.ativar}">
+		 <h:graphicImage library="imagens" name="usuario_ativo_#{usuario.ativo}.png"/>
+		 <f:setPropertyActionListener target="#{usuarioController.usuario}" value="#{usuario}" />
+		 </h:commandLink>
+		</h:column>
+		
+		<h:column>
+			<f:facet name="header">codigo</f:facet>
+			#{usuario.codigo}
+		</h:column>		
+		
+		<h:column>
+			<h:graphicImage library="imagens" name="bandeira_#{usuario.idioma}.png" />
+		</h:column>
+		
+		<h:column>
+			<f:facet name="header">nome</f:facet>
+			#{usuario.nome}
+		</h:column>
+		
+		<h:column>
+			<f:facet name="header">e-mail</f:facet>
+			<a href="mailto:#{usuario.email}">#{usuario.email}</a>
+		</h:column>
+		
+		<h:column>
+		 <h:commandLink action="#{usuarioController.editar}">
+		 <h:graphicImage library="imagens" name="editar16.png" 
+		 style="border:0"/>
+		 <f:setPropertyActionListener target="#{usuarioController.usuario}" value="#{usuario}"/>
+		 <f:setPropertyActionListener target="#{usuarioController.destinoSalvar}" value="/admin/principal"/>
+		 </h:commandLink>
+		</h:column>
+	
+		<h:column>
+		 <h:commandLink action="#{usuarioController.excluir}" 
+		 onclick="if (!confirm('Confirma exclusao de #{usuario.nome}?')) return false;">
+		 
+		 <h:graphicImage library="imagens" name="excluir16.png" 
+		 style="border:0"/>
+		 <f:setPropertyActionListener target="#{usuarioController.usuario}" value="#{usuario}"/>
+		 </h:commandLink>
+		</h:column>
+		
+		</h:dataTable>
+	</h:form>
+</body> 
+</html>

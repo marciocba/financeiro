@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"> 
+
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+<title>Cadastro de Usuarios</title>
+
+</h:head> 
+<body> 
+<h1>Cadastro de Usuarios</h1>
+<hr/>
+<h:form id="cadastro">
+	<h:messages />
+	<h:inputHidden value="#{usuarioController.usuario.codigo}" />
+	<h:inputHidden value="#{usuarioController.usuario.ativo}" />
+	<h:inputHidden value="#{usuarioController.destinoSalvar}" />
+	<h:panelGrid columns="2">
+		<h:outputLabel value="Nome:" for="nome"/>
+		<h:inputText id="nome" label="Nome:" value="#{usuarioController.usuario.nome}" 
+		size="30" maxlength="30" required="true"  requiredMessage="voce nao tem nome">
+			<f:validateLength minimum="10" maximum="30"></f:validateLength>
+		</h:inputText>
+			
+		<h:outputLabel value="Data Nascimento:" for="data" />
+		<h:inputText id="data" label="Data Nascimento"  value="#{usuarioController.nascimento}" 
+		size="10" maxlength="10" required="true">
+			<f:convertDateTime dateStyle = "medium" />
+		</h:inputText>
+		
+		<h:outputLabel value="Celular:" for="celular"/>
+		<h:inputText id="celular" label="Celular" value="#{usuarioController.usuario.celular}" size="10"/>
+		
+		<h:outputLabel value="E-Mail:" for="email"/>
+		<h:panelGroup>
+			<h:inputText id="email" 
+				label="e-mail" 
+				value="#{usuarioController.usuario.email}"
+				size="50" maxlength="50" required="true"
+				validatorMessage="#{usuarioController.usuario.email} Email invalido">
+				<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+				
+			</h:inputText>
+			<h:message for="email"/>
+		</h:panelGroup>
+	
+		<h:outputLabel value="Idioma:" for="idioma"/>
+		<h:selectOneMenu id="idioma" value="#{usuarioController.usuario.idioma}">
+			<f:selectItem itemValue="pt_BR" itemLabel="Portugues"/>
+			<f:selectItem itemValue="en_US" itemLabel="English"/>
+			<f:selectItem itemValue="es_ES" itemLabel="Espanol"/>
+		</h:selectOneMenu>
+		
+		<h:outputLabel value="Login:" for="login"/>
+		<h:inputText id="login" label="Login" 
+			value="#{usuarioController.usuario.login}" 
+			size="15" maxlength="15" required="true" 
+			validatorMessage="login deve ter no minimo 5 max 15 caracteres e so pode ter os simbolos '.' e '_' ">
+			<f:validateRegex pattern="([a-z]|[0-9]|[.]|[_]){5,15}" />
+		</h:inputText>
+		
+		<h:outputLabel value="Senha:" for="senha"/>
+		<h:inputSecret id="senha" label="Senha" 
+		value="#{usuarioController.usuario.senha}" 
+		size="10" maxlength="10" required="true" redisplay="true"/>
+		
+		<h:outputLabel value="Confirmar Senha:" for="confirmarsenha"/>
+		<h:inputSecret id="confirmarsenha" label="Confirmar Senha" 
+		value="#{usuarioController.confirmarSenha}" required="true" redisplay="true"/>
+		<h:outputText />
+		<h:commandButton action="#{usuarioController.salvar}" value="salvar" />
+	
+	</h:panelGrid>
+
+</h:form>
+<hr/>
+
+</body> 
+</html>
