@@ -22,6 +22,7 @@ public class ContextoController {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ExternalContext external = context.getExternalContext();
 		String login = external.getRemoteUser();
+		System.out.println("ContextoController.getUsuarioLogado:"+login);
 		if (login != null) {
 			UsuarioRN usuarioRN = new UsuarioRN();
 			return usuarioRN.buscarPorLogin(login);

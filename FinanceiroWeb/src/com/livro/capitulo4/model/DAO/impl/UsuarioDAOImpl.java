@@ -45,7 +45,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 	@Override
 	public Usuario buscarPorLogin(String login) {
-		String hql="";
+		String hql="select u from Usuario u where u.login = :login";
 		Query query=this.session.createQuery(hql);
 		query.setString("login", login);
 		return (Usuario) query.uniqueResult();

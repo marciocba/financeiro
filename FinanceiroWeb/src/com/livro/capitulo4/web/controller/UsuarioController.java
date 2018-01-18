@@ -11,7 +11,9 @@ import javax.faces.bean.ViewScoped;
 
 import javax.faces.context.FacesContext;
 
+import com.livro.capitulo4.model.Conta;
 import com.livro.capitulo4.model.Usuario;
+import com.livro.capitulo4.model.rn.ContaRN;
 import com.livro.capitulo4.model.rn.UsuarioRN;
 
 
@@ -24,6 +26,7 @@ public class UsuarioController {
 	private Date nascimento;
 	private List<Usuario> lista;
 	private String destinoSalvar;
+	private Conta conta=new Conta();
 
 	public String atribuiPermissao(Usuario usuario, String permissao) {
 		this.usuario = usuario;
@@ -68,6 +71,16 @@ public class UsuarioController {
 		
 		UsuarioRN usuarioRN=new UsuarioRN();
 		usuarioRN.salvar(this.usuario);
+		
+		if (this.getConta().getDescricao()!=null) {
+			this.getConta().setUsuario(this.usuario);
+			this.getConta().setFavorita(true);
+			
+			ContaRN contaRN=new ContaRN();
+			contaRN.salvar(this.getConta());
+		}
+		
+		
 		return getDestinoSalvar();
 	}
 	
@@ -105,15 +118,28 @@ public class UsuarioController {
 	public void setLista(List<Usuario> lista) {	this.lista = lista;}
 	public String getDestinoSalvar() {return destinoSalvar;	}
 	public void setDestinoSalvar(String destinoSalvar) {this.destinoSalvar = destinoSalvar;}
-	
+
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((confirmarSenha == null) ? 0 : confirmarSenha.hashCode());
+		result = prime * result + ((conta == null) ? 0 : conta.hashCode());
+		result = prime * result + ((destinoSalvar == null) ? 0 : destinoSalvar.hashCode());
+		result = prime * result + ((lista == null) ? 0 : lista.hashCode());
+		result = prime * result + ((nascimento == null) ? 0 : nascimento.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -133,6 +159,34 @@ public class UsuarioController {
 		} else if (!confirmarSenha.equals(other.confirmarSenha)) {
 			return false;
 		}
+		if (conta == null) {
+			if (other.conta != null) {
+				return false;
+			}
+		} else if (!conta.equals(other.conta)) {
+			return false;
+		}
+		if (destinoSalvar == null) {
+			if (other.destinoSalvar != null) {
+				return false;
+			}
+		} else if (!destinoSalvar.equals(other.destinoSalvar)) {
+			return false;
+		}
+		if (lista == null) {
+			if (other.lista != null) {
+				return false;
+			}
+		} else if (!lista.equals(other.lista)) {
+			return false;
+		}
+		if (nascimento == null) {
+			if (other.nascimento != null) {
+				return false;
+			}
+		} else if (!nascimento.equals(other.nascimento)) {
+			return false;
+		}
 		if (usuario == null) {
 			if (other.usuario != null) {
 				return false;
@@ -143,4 +197,5 @@ public class UsuarioController {
 		return true;
 	}
 	
+		
 }
