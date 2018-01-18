@@ -39,7 +39,7 @@
     <param-value>true</param-value>
   </context-param>
   
-	<!-- Spring Security 
+	<!-- Spring Security -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -58,5 +58,5 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-  -->
+  
 </web-app>

@@ -1,27 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-		http://www.springframework.org/schema/security
-		http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    	http://www.springframework.org/schema/security
+    	http://www.springframework.org/schema/security/spring-security.xsd">
+
 	<http auto-config="true">
-		<intercept-url pattern="/admin/**" access="ROLE_ADMINISTRADOR" />
-		<intercept-url pattern="/restrito/**" access="ROLE_USUARIO" />
+		<csrf disabled="true"/>
+		<!--  -->
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMINISTRADOR')" />
+		<intercept-url pattern="/restrito/**" access="hasRole('ROLE_USUARIO')" />
+		
+		<!-- 
 		<form-login login-page="/publico/login.jsf"
 			always-use-default-target="true" 
 			default-target-url="/restrito/principal.jsf"
-			authentication-failure-url="/publico/login.jsf?login_error=1" />
+			authentication-failure-url="/publico/login.jsf?login_error=1"
+			 login-processing-url="/j_spring_security_check"
+			/>
+		-->	 
+		<form-login/>
 		<logout />
-		<remember-me />
+		<remember-me />  
 	</http>
+	
+	<!-- code below is from the boot but it is not working  
+    
 	<authentication-manager>
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="financeiroDataSource"
-				authorities-by-username-query="SELECT u.login, p.permissao 
-																	FROM Usuario u, usuario_permissao p 
-																	WHERE u.codigo = p.usuario AND u.login = ?"
-				users-by-username-query="SELECT login, senha, ativo FROM Usuario WHERE login = ?" />
+				authorities-by-username-query=
+				"SELECT u.login, p.permissao 
+					FROM Usuario u, usuario_permissao p 
+					WHERE u.codigo = p.usuario AND u.login = ?"
+					
+				users-by-username-query=
+				  "SELECT login, senha, ativo FROM Usuario WHERE login = ?" />
 		</authentication-provider>
 	</authentication-manager>
+	-->
+	
+	<!--  
+	<beans:bean id="bcrypt" 
+	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	-->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider>
+        <!-- 
+        <user-service>
+         <user name="marciocba" password="123" authorities="ROLE_USER"/>
+        </user-service>
+           -->  
+            <jdbc-user-service id="jdbcUserService" data-source-ref="financeiroDataSource"
+                users-by-username-query="SELECT login, senha, ativo FROM Usuario WHERE login = ?;" 
+                authorities-by-username-query="
+                SELECT u.login, p.permissao 
+					FROM Usuario u, usuario_permissao p 
+					WHERE u.codigo = p.usuario AND u.login = ?;" 
+            />
+        
+        </authentication-provider>
+    </authentication-manager>
 </beans:beans>
